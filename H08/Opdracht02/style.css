@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 62.5%;
+}
+
+.container {
+  width: 80vw;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.margin-right-left {
+  margin: 0 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 8rem;
+  box-shadow: 0 0.2rem 2.5rem rgba(0, 0, 0, 0.2);
+  font-size: 1.6rem;
+}
+
+.sections {
+  display: flex;
+  list-style: none;
+}
+
+.section {
+  margin: 0 2rem;
+}
+
+.search-parameters {
+  font-size: 1.5rem;
+}
+
+.parameter-list {
+  list-style: none;
+}
+
+.parameter-list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.car-select-box {
+  opacity: 70%;
+  padding: 0.4rem;
+  width: 100%;
+}
+
+.parameter-text {
+  font-weight: 600;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  box-shadow: 0 0.2rem 15rem rgba(0, 0, 0, 0.2);
+}
+
+.cars-section {
+  padding: 4rem 0;
+}
+
+.car-container {
+  display: flex;
+  justify-content: space-between;
+  row-gap: 4rem;
+  flex-wrap: wrap;
+}
+
+.car-card {
+  border-radius: 1rem;
+  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: all 0.3s;
+}
+
+.car-card:hover {
+  transform: translateY(-0.5rem);
+  box-shadow: 0 3.2rem 6.4rem rgba(0, 0, 0, 0.2);
+}
+
+.car-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: linear-gradient(
+    to right,
+    rgb(255, 255, 255),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 60%;
+  width: 100%;
+  padding: 1rem;
+  position: absolute;
+  top: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.car-img {
+  border-radius: 1rem;
+  width: 35rem;
+  height: 100%;
+}
