@@ -1,23 +1,13 @@
 <?php
 
 require_once("Auto.php");
+require_once("AutoOverzicht.php");
 
-$merk;
-$minPrijs;
-$maxPrijs;
+$autoos = new AutoOverzicht();
 
-$autos = [
-    new Auto("Audi", "102500.00", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP._vQFXypIcZEl3Ip3BvGGcQHaEK%26pid%3DApi&f=1"),
-    new Auto("Ferrari", "99500.00", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.vFODlT-nQ9gLKUO9iESekwHaEI%26pid%3DApi&f=1"),
-    new Auto("Fiat", "10500.00", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.5Regk-xXBeVfiX9t3czq-AHaEK%26pid%3DApi&f=1"),
-];
-
-if(isset($_POST["submit"])) {
-  $merk = $_POST["cars"];
-  $minPrijs = $_POST["min-prijs"];
-  $maxPrijs = $_POST["max-prijs"];
-}
-
+$minPrijs = isset($_GET["min-prijs"]) && !empty($_GET["min-prijs"]) ? $_GET["min-prijs"] : 0;
+$maxPrijs = isset($_GET["max-prijs"]) && !empty($_GET["max-prijs"]) ? $_GET["max-prijs"] : 99999999;
+$merk = isset($_GET["merk"]) ? $_GET["merk"] : "alle-merken";
 
 ?>
 
@@ -43,11 +33,11 @@ if(isset($_POST["submit"])) {
         </ul>
     </header>
     <div class="container">
-        <form action="" method="post" class="search-parameters">
+        <form action="" method="get" class="search-parameters">
             <ul class="parameter-list">
                 <li class="parameter-list-item">
-                    <label for="cars" class="parameter-text">Merk:</label>
-                    <select name="cars" class="car-select-box">
+                    <label for="merk" class="parameter-text">Merk:</label>
+                    <select name="merk" class="car-select-box" id="merk">
                         <option value="alle-merken">Alle merken</option>
                         <option value="Audi">Audi</option>
                         <option value="Ferrari">Ferrari</option>
@@ -59,11 +49,11 @@ if(isset($_POST["submit"])) {
                 </li>
                 <li class="parameter-list-item">
                     <label for="min-prijs" class="parameter-text">Minimale prijs:</label>
-                    <input type="text" class="car-select-box" name="min-prijs">
+                    <input type="text" class="car-select-box" name="min-prijs" id="min-prijs">
                 </li>
                 <li class="parameter-list-item">
                     <label for="max-prijs" class="parameter-text">Maximale prijs:</label>
-                    <input type="text" class="car-select-box" name="max-prijs">
+                    <input type="text" class="car-select-box" name="max-prijs" id="max-prijs">
                 </li>
                 <input type="submit" name="submit" class="btn">
             </ul>
@@ -72,36 +62,11 @@ if(isset($_POST["submit"])) {
             <div class="car-container">
 
                 <?php 
-                if(isset($merk) && isset($_POST["submit"])) {
-                  foreach($autos as $auto) {
-                    showCars($auto->getMerk() == $merk, $auto->getPrijs(), $auto->getImageUrl());
-                  }
-                } else {
-                  showCars($auto->getMerk(), $auto->getPrijs(), $auto->getImageUrl());
+                
+                foreach($autoos->getGefilterdeLijst($minPrijs, $maxPrijs, $merk) as $auto) {
+                  $autoos->showCars($auto->getMerk(), $auto->getPrijs(), $auto->getImageUrl());
                 }
 
-
-
-                function showCars($merk, $prijs , $image_url) {
-                  // begin 1
-                  echo "<div class='car-card'>";
-
-                    // begin 2
-                    echo "<div class='car-text'>";
-
-                      echo "<p>" . $merk . "</p>"; 
-                      
-                      echo "<p>$" . $prijs . "</p>"; 
-
-                    // eind 2
-                    echo "</div>";
-
-                    echo "<img class='car-img' src='" . $image_url . "' alt='car image'>";
-
-                  // eind 1  
-                  echo "</div>";
-                }
-            
               ?>
             </div>
         </section>
