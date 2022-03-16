@@ -1,27 +1,39 @@
 <?php
 
-class BreadOverzicht {
+class BreadOverview {
     private $breadOverview;
 
     function __construct() {
-        $this->breadOverview = [
-            new Bread("volkore", "bolvormig", 300, "img/maurizio-izzo-HHeBdtgPmD8-unsplash.jpg"),
-            new Bread("spelt", "vierkant", 200, "img\jonathan-pielmayer-j1gr2w10EtQ-unsplash.jpg"),
-            new Bread("tarwe", "rond", 500, "img\jude-infantini-rYOqbTcGp1c-unsplash.jpg"),
-        ];
+        // $this->breadOverview = [];
     }
 
     public function addBread($flour, $shape, $weight, $image_url) {
         $this->breadOverview[] = new Bread($flour, $shape, $weight, $image_url);
     }
 
+    public function editBread($bread, $flour, $shape, $weight, $image_url) {
+        $currentBread = $this->breadOverview[$bread];
+
+        $currentBread->setFlour($flour);
+        $currentBread->setShape($shape);
+        $currentBread->setWeight($weight);
+        $currentBread->setImg_url($image_url);
+    }
+
     public function getBreadOverview() {
         return $this->breadOverview;
     }
 
-    public function removeBread() {
-    }
+    // public function getBread($bread) {
+    //     return $this->breadOverview[$bread];
+    // }
 
+    public function removeBread($bread) {
+        $tempArr = [];
+        unset($this->breadOverview[$bread]);
+        $tempArr = array_values($this->breadOverview);
+        $this->breadOverview = $tempArr;
+    }
 
     public function displayBread($bread) {
         // Begin 1
