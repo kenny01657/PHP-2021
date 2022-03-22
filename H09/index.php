@@ -98,7 +98,7 @@
                     $currentBread = $_POST["header-text"];
                     $_SESSION["breadOverview"]->removeBread($currentBread);
                 }
-                
+
                 // Displaying bread items
                 foreach($_SESSION["breadOverview"]->getBreadOverview() as $bread) {
                     $_SESSION["breadOverview"]->displayBread($bread);

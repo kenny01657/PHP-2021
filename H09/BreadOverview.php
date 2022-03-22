@@ -24,10 +24,6 @@ class BreadOverview {
         return $this->breadOverview;
     }
 
-    // public function getBread($bread) {
-    //     return $this->breadOverview[$bread];
-    // }
-
     public function removeBread($bread) {
         $tempArr = [];
         unset($this->breadOverview[$bread]);
