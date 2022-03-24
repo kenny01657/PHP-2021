@@ -1,4 +1,8 @@
 <?php 
+  ini_set('display_errors', 0);
+  ini_set('display_startup_errors', 0);
+  error_reporting(-1);
+  
   include_once("Bread.php");
   include_once("BreadOverview.php");
   include_once("upload.php");
@@ -72,12 +76,6 @@
                     $_SESSION["post"] = [];
                 }
 
-                if($_POST == $_SESSION['post']) {
-                    unset($_POST);
-                } else {
-                    $_SESSION["post"] = $_POST;
-                }
-
                 // Editing bread item
                 if(isset($_POST["edit"])) {
                     $currentBread = $_POST["header-text"];
@@ -86,17 +84,45 @@
                     }
                     $_SESSION["breadOverview"]->editBread($currentBread, $_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
                 }
-                
+
+                function checkDublicates() {
+                    $postArr = [];
+                    $breadOverview = [];
+                    foreach($_SESSION["breadOverview"]->getBreadOverview() as $item) {
+                        $flour = $item->getFlour();
+                        $shape = $item->getShape();
+                        $weight = $item->getWeight();
+                        $breadOverview[] = [$flour, $shape, $weight];
+                    }
+                    
+                    foreach($_POST as $item) {
+                        $postArr[] = $item;
+                    }
+                    
+                    array_splice($postArr, 0, 1);
+                    array_splice($postArr, -2, 2);
+
+                    foreach($breadOverview as $breadItem) {
+                        if($postArr === $breadItem) {
+                            return true;
+                        }
+                    }
+                }
+
                 // Adding bread item
                 if(isset($_POST["submit-btn"])) {
-                    $currentBread = $_POST["header-text"];
-                    $_SESSION["breadOverview"]->addBread($_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
+                    if(!checkDublicates()) {
+                        $_SESSION["breadOverview"]->addBread($_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
+                    }
                 }
                 
                 // Deleting bread item
                 if(isset($_POST["delete"])) {
                     $currentBread = $_POST["header-text"];
-                    $_SESSION["breadOverview"]->removeBread($currentBread);
+                    if($_POST !== $_SESSION['post']) {
+                        $_SESSION["post"] = $_POST;
+                        $_SESSION["breadOverview"]->removeBread($currentBread);
+                    }
                 }
 
                 // Displaying bread items
