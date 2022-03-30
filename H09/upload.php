@@ -9,9 +9,7 @@
     // Check if image file is a actual image or fake image
     if(isset($_POST["submit"])) {
       $check = getimagesize($_FILES["img-url"]["tmp_name"]);
-      if($check !== false) {
-        $uploadOk = 1;
-      } else {
+      if(!$check) {
         $uploadOk = 0;
       }
     }
@@ -33,10 +31,8 @@
       $uploadOk = 0;
     }
     
-    // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
     // if everything is ok, try to upload file
-    } else {
+    if ($uploadOk) {
       if (move_uploaded_file($_FILES["img-url"]["tmp_name"], $target_file)) {
         $_POST["img-url"] = $target_file;
       }

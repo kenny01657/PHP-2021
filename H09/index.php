@@ -1,7 +1,7 @@
 <?php 
-  ini_set('display_errors', 0);
-  ini_set('display_startup_errors', 0);
-  error_reporting(-1);
+//   ini_set('display_errors', 0);
+//   ini_set('display_startup_errors', 0);
+//   error_reporting(-1);
   
   include_once("Bread.php");
   include_once("BreadOverview.php");
@@ -66,28 +66,21 @@
             <div class="bread-overview">
 
                 <?php
-                //check if breadoverview already exists
+                // Check if breadoverview already exists
                 if(!$_SESSION["breadOverview"]) {
                     $_SESSION["breadOverview"] = new BreadOverview();
                 }
                 
-                // Check if current post is equel to the previous post
+                // Check if post already exists
                 if(!$_SESSION["post"]) {
                     $_SESSION["post"] = [];
-                }
-
-                // Editing bread item
-                if(isset($_POST["edit"])) {
-                    $currentBread = $_POST["header-text"];
-                    if($_POST["img-url"] === "uploads/") {
-                        $_POST["img-url"] = $_SESSION["breadOverview"]->getBreadOverview()[$currentBread]->getImg_url();
-                    }
-                    $_SESSION["breadOverview"]->editBread($currentBread, $_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
                 }
 
                 function checkDublicates() {
                     $postArr = [];
                     $breadOverview = [];
+
+                    // Making the current post and all the bread items compariable array's
                     foreach($_SESSION["breadOverview"]->getBreadOverview() as $item) {
                         $flour = $item->getFlour();
                         $shape = $item->getShape();
@@ -101,7 +94,8 @@
                     
                     array_splice($postArr, 0, 1);
                     array_splice($postArr, -2, 2);
-
+                    
+                    // Checking if the current post is equal to a bread item
                     foreach($breadOverview as $breadItem) {
                         if($postArr === $breadItem) {
                             return true;
@@ -109,19 +103,31 @@
                     }
                 }
 
-                // Adding bread item
-                if(isset($_POST["submit-btn"])) {
+                // Editing bread item
+                if(isset($_POST["edit"])) {
+                    $currentBread = $_POST["header-text"];
                     if(!checkDublicates()) {
-                        $_SESSION["breadOverview"]->addBread($_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
+                        if($_POST["img-url"] === "uploads/") {
+                            $_POST["img-url"] = $_SESSION["breadOverview"]->getBreadOverview()[$currentBread]->getImg_url();
+                        }
+                        $_SESSION["breadOverview"]->editBread($currentBread, $_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
                     }
                 }
-                
+
                 // Deleting bread item
                 if(isset($_POST["delete"])) {
                     $currentBread = $_POST["header-text"];
                     if($_POST !== $_SESSION['post']) {
                         $_SESSION["post"] = $_POST;
                         $_SESSION["breadOverview"]->removeBread($currentBread);
+                    }
+                }
+
+                // Adding bread item
+                if(isset($_POST["submit-btn"])) {
+                    if(!checkDublicates()) {
+                        $_SESSION["breadOverview"]->addBread($_POST["flour"], $_POST["shape"], $_POST["weight"], $_POST["img-url"]);
+                        $_SESSION["post"] = "";
                     }
                 }
 
@@ -135,8 +141,6 @@
         </main>
     </div>
     <div class="overlay hidden"></div>
-
-
 
     <script src="script.js"></script>
 </body>

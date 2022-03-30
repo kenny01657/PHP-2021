@@ -3,10 +3,6 @@
 class BreadOverview {
     private $breadOverview;
 
-    function __construct() {
-        // $this->breadOverview = [];
-    }
-
     public function addBread($flour, $shape, $weight, $image_url) {
         $this->breadOverview[] = new Bread($flour, $shape, $weight, $image_url);
     }
